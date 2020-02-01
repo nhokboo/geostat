@@ -16,12 +16,12 @@ import configparser
 from influxdb import InfluxDBClient
 from IPy import IP as ipadd
 
-def logparse(LOGPATH, INFLUXHOST, INFLUXPORT, INFLUXDBDB, INFLUXUSER, INFLUXUSERPASS, MEASUREMENT, GEOIPDB, INODE): # NOQA
+def logparse(LOGPATH, INFLUXHOST, INFLUXPORT, INFLUXDBDB, INFLUXUSER, INFLUXUSERPASS, MEASUREMENT, GEOIPDB, INODE,HOSTNAME): # NOQA
     # Preparing variables and params
     IPS = {}
     COUNT = {}
     GEOHASH = {}
-    HOSTNAME = os.uname()[1]
+    # HOSTNAME = os.uname()[1]
     CLIENT = InfluxDBClient(host=INFLUXHOST, port=INFLUXPORT,
                             username=INFLUXUSER, password=INFLUXUSERPASS, database=INFLUXDBDB) # NOQA
 
@@ -85,6 +85,7 @@ def main():
     INFLUXUSER = CONFIG.get('INFLUXDB', 'username')
     MEASUREMENT = CONFIG.get('INFLUXDB', 'measurement')
     INFLUXUSERPASS = CONFIG.get('INFLUXDB', 'password')
+    HOSTNAME = CONFIG.get('GLOBAL', 'hostname')
 
     # Parsing log file and sending metrics to Influxdb
     while True:
@@ -92,7 +93,7 @@ def main():
         INODE = os.stat(LOGPATH).st_ino
         # Run main loop and grep a log file
         if os.path.exists(LOGPATH):
-            logparse(LOGPATH, INFLUXHOST, INFLUXPORT, INFLUXDBDB, INFLUXUSER, INFLUXUSERPASS, MEASUREMENT, GEOIPDB, INODE) # NOQA
+            logparse(LOGPATH, INFLUXHOST, INFLUXPORT, INFLUXDBDB, INFLUXUSER, INFLUXUSERPASS, MEASUREMENT, GEOIPDB, INODE,HOSTNAME) # NOQA
         else:
             print('File %s not found' % LOGPATH)
 

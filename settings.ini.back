@@ -20,3 +20,6 @@ password = "password"
 
 #  Measurement name
 measurement = geodata
+
+[GLOBAL]
+hostname = hostname

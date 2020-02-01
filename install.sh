@@ -8,13 +8,27 @@
 WORKDIR=$(pwd)
 
 echo ""
-echo "Downloading latest GeoLiteCity.dat from MaxMind"
-sleep 1
-wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+echo "Install latest GeoLiteCity.dat"
+# sleep 1
+# wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 mkdir tmpgeo
 tar -xvf GeoLite2-City.tar.gz -C ./tmpgeo && cd ./tmpgeo/*/.
 cp ./GeoLite2-City.mmdb $WORKDIR
 cd $WORKDIR
+
+echo ""
+echo "Install Pip"
+if ! [ -x "$(command -v pip)" ]; then
+
+ yum install -y python-pip
+fi
+
+
+echo ""
+echo "Install virtualen"
+
+pip install -y virtualen
+
 
 echo ""
 echo "Creating virtual ENV and installing requirements..."
